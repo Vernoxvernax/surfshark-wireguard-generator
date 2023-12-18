@@ -58,19 +58,16 @@ func main() {
 		log.Fatal(err)
 	}
 
-	template := `
-[Interface]
+	template :=
+		`[Interface]
 Address = 10.14.0.2/16
-ListenPort = 51820
 PrivateKey = %s
 DNS = 162.252.172.57, 149.154.159.92
-
 [Peer]
 PublicKey = %s
 PresharedKey = %s
-AllowedIPs = 0.0.0.0/0, ::/0
-Endpoint = %s:51820
-`
+AllowedIPs = 0.0.0.0/0
+Endpoint = %s.prod.surfshark.com:51820`
 
 	prompt = promptui.Prompt{
 		Label: "Output directory",
