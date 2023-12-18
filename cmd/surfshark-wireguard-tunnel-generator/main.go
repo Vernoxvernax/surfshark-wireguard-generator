@@ -63,7 +63,7 @@ func main() {
 Address = 10.14.0.2/16
 ListenPort = 51820
 PrivateKey = %s
-DNS = 1.1.1.1, 1.0.0.1
+DNS = 162.252.172.57, 149.154.159.92
 
 [Peer]
 PublicKey = %s
