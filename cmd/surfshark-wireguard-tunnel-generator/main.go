@@ -40,14 +40,35 @@ func main() {
 		log.Fatal(err)
 	}
 
-	template := `[Interface]
-PrivateKey = %s
+	prompt = promptui.Prompt{
+		Label: "Preshared key",
+		Validate: func(input string) (err error) {
+			if len(input) == 0 {
+				return errors.New("no preshared key provided")
+			}
+
+			_, err = base64.StdEncoding.DecodeString(input)
+			return
+		},
+		HideEntered: false,
+	}
+
+	presharedKey, err := prompt.Run()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	template := `
+[Interface]
 Address = 10.14.0.2/16
-DNS = 162.252.172.57, 149.154.159.92
+ListenPort = 51820
+PrivateKey = %s
+DNS = 1.1.1.1, 1.0.0.1
 
 [Peer]
 PublicKey = %s
-AllowedIPs = 0.0.0.0/0
+PresharedKey = %s
+AllowedIPs = 0.0.0.0/0, ::/0
 Endpoint = %s:51820
 `
 
@@ -103,7 +124,7 @@ Endpoint = %s:51820
 				file.Close()
 			}(file)
 
-			_, err = file.WriteString(fmt.Sprintf(template, privateKey, connection.Key, connection.Name))
+			_, err = file.WriteString(fmt.Sprintf(template, privateKey, connection.Key, presharedKey, connection.Name))
 			if err != nil {
 				log.Fatal(err)
 			}
