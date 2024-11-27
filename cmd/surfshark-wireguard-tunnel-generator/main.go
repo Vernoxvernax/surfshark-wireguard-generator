@@ -69,7 +69,7 @@ DNS = %s
 [Peer]
 PublicKey = %s%s
 AllowedIPs = 0.0.0.0/0
-Endpoint = %s.prod.surfshark.com:51820`
+Endpoint = %s:51820`
 
 	var outputDirectory string
 	if len(*output_arg) == 0 {
