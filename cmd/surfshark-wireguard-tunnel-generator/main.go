@@ -55,27 +55,10 @@ func main() {
 	}
 
 	var presharedKey string
-	if len(*presharedKey_arg) == 0 {
-		prompt := promptui.Prompt{
-			Label: "Preshared key",
-			Validate: func(input string) (err error) {
-				if len(input) == 0 {
-					return errors.New("no preshared key provided")
-				}
-
-				_, err = base64.StdEncoding.DecodeString(input)
-				return
-			},
-			HideEntered: false,
-		}
-
-		var err error
-		presharedKey, err = prompt.Run()
-		if err != nil {
-			log.Fatal(err)
-		}
+	if len(*presharedKey_arg) != 0 {
+		presharedKey = "\nPresharedKey = " + *presharedKey_arg
 	} else {
-		presharedKey = *presharedKey_arg
+		presharedKey = ""
 	}
 
 	template :=
@@ -84,8 +67,7 @@ Address = 10.14.0.2/16
 PrivateKey = %s
 DNS = %s
 [Peer]
-PublicKey = %s
-PresharedKey = %s
+PublicKey = %s%s
 AllowedIPs = 0.0.0.0/0
 Endpoint = %s.prod.surfshark.com:51820`
 
